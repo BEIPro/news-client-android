@@ -1,17 +1,24 @@
+package com.song.normalclient.News;
+
 import android.app.Activity;
-import android.app.Fragment;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatCallback;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.ActionMode;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v7.widget.Toolbar;
 
-import com.example.songsubei.mynewsclient.R;
+import com.song.normalclient.presenters.NewsFragmentAdapter;
+
+import News.R;
+
 
 /**
  * Created by songsubei on 27/09/15.
@@ -20,13 +27,16 @@ public class NewsFragment extends Fragment implements AppCompatCallback{
 
     private AppCompatDelegate appCompatDelegate;
     private Toolbar toolbar;
-    private Activity activity;
+    private AppCompatActivity activity;
     private ViewPager viewPager;
+
+    public NewsFragment() {
+    }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.activity = activity;
+        this.activity = (AppCompatActivity) activity;
     }
 
     @Nullable
@@ -37,7 +47,10 @@ public class NewsFragment extends Fragment implements AppCompatCallback{
 
         appCompatDelegate = AppCompatDelegate.create(activity, this);
         appCompatDelegate.setSupportActionBar(toolbar);
-        return super.onCreateView(inflater, container, savedInstanceState);
+
+        viewPager.setAdapter(new NewsFragmentAdapter(activity.getSupportFragmentManager()));
+//        return inflater.inflate(container.getId(),container);
+        return null;
     }
 
     @Override

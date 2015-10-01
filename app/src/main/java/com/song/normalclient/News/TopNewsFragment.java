@@ -1,3 +1,4 @@
+package com.song.normalclient.News;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

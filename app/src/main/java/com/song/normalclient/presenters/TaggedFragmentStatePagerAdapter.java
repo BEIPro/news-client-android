@@ -1,4 +1,4 @@
-
+package com.song.normalclient.presenters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -6,6 +6,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.song.normalclient.LogDebug;
 
 import java.util.ArrayList;
 
@@ -53,11 +55,26 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
 
         Fragment fragment = getItem(position);
         fragmentTransaction.add(container.getId(), fragment);
+        fragments.set(position, fragment);
 
         return fragment;
     }
 
     public abstract Fragment getItem(int position);
+
+    @Override
+    public void finishUpdate(View container) {
+        if (fragmentTransaction != null) {
+            fragmentTransaction.commitAllowingStateLoss();
+        }
+        fragmentTransaction = null;
+        fragmentManager.executePendingTransactions();
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+
+    }
 
     private class DebugClass extends LogDebug
     {

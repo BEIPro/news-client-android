@@ -1,3 +1,5 @@
+package com.song.normalclient;
+
 import android.util.Log;
 
 /**
