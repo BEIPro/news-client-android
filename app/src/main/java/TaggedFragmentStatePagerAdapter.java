@@ -1,0 +1,69 @@
+
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.view.View;
+import android.view.ViewGroup;
+
+import java.util.ArrayList;
+
+/**
+ * Created by songsubei on 27/09/15.
+ */
+public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
+
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
+    private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
+    private ArrayList<Fragment.SavedState> savedStates = new ArrayList<Fragment.SavedState>();
+    private DebugClass debugClass = new DebugClass();
+
+    public TaggedFragmentStatePagerAdapter(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
+
+    @Override
+    public int getCount() {
+        return 0;
+    }
+
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+        return false;
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+
+        if(fragments.size() < position){
+            if(fragments.get(position) != null){
+                return fragments.get(position);
+            }
+        }
+
+        while (fragments.size() >= position){
+            fragments.add(null);
+        }
+
+        if(fragmentTransaction == null){
+            fragmentTransaction = fragmentManager.beginTransaction();
+        }
+
+        Fragment fragment = getItem(position);
+        fragmentTransaction.add(container.getId(), fragment);
+
+        return fragment;
+    }
+
+    public abstract Fragment getItem(int position);
+
+    private class DebugClass extends LogDebug
+    {
+        @Override
+        void log(boolean DBG, String Tag, String logMsg) {
+            super.parantLog(DBG, Tag, logMsg);
+        }
+    }
+}
