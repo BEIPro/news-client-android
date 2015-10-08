@@ -7,7 +7,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.song.normalclient.LogDebug;
+import com.song.normalclient.Debug.LogDebug;
 
 import java.util.ArrayList;
 
@@ -76,11 +76,18 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
 
     }
 
-    private class DebugClass extends LogDebug
+    /*private class DebugClass extends LogDebug
     {
         @Override
         void log(boolean DBG, String Tag, String logMsg) {
             super.parantLog(DBG, Tag, logMsg);
+        }
+    }*/
+    private class DebugClass extends LogDebug{
+
+        @Override
+        public void log(boolean DBG, String Tag, String logMsg) {
+            parantLog(DBG, Tag, logMsg);
         }
     }
 }

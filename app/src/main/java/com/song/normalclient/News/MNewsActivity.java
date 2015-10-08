@@ -5,7 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import News.R;
+import com.song.normalclient.R;
+
 
 /**
  * Created by songsubei on 26/09/15.

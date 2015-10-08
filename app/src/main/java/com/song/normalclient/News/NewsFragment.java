@@ -15,9 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.song.normalclient.R;
 import com.song.normalclient.presenters.NewsFragmentAdapter;
 
-import News.R;
+
 
 
 /**
