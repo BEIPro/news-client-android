@@ -6,7 +6,12 @@ import android.support.v4.app.Fragment;
 /**
  * Created by songsubei on 27/09/15.
  */
-public class EnterTainNewsFragment extends Fragment {
+public class EnterTainNewsFragment extends BaseNewsFragment {
+
+    public EnterTainNewsFragment(int layoutSrcId) {
+        super(layoutSrcId);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

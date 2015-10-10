@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +16,8 @@ import java.util.ArrayList;
  * Created by songsubei on 27/09/15.
  */
 public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
+
+    private static final String TAG = "TaggedFragmentStatePagerAdapter";
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -38,7 +41,7 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-
+        Log.d(TAG, "start to add a fragment " + position);
         if(fragments.size() < position){
             if(fragments.get(position) != null){
                 return fragments.get(position);
@@ -57,6 +60,7 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
         fragmentTransaction.add(container.getId(), fragment);
         fragments.set(position, fragment);
 
+        Log.d(TAG, "add a fragment " + position);
         return fragment;
     }
 
@@ -76,13 +80,6 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
 
     }
 
-    /*private class DebugClass extends LogDebug
-    {
-        @Override
-        void log(boolean DBG, String Tag, String logMsg) {
-            super.parantLog(DBG, Tag, logMsg);
-        }
-    }*/
     private class DebugClass extends LogDebug{
 
         @Override

@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +12,12 @@ import android.support.v7.app.AppCompatCallback;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+
 
 import com.song.normalclient.R;
 import com.song.normalclient.presenters.NewsFragmentAdapter;
@@ -30,6 +34,8 @@ public class NewsFragment extends Fragment implements AppCompatCallback{
     private Toolbar toolbar;
     private AppCompatActivity activity;
     private ViewPager viewPager;
+    private TabLayout tabLayout;
+
 
     public NewsFragment() {
     }
@@ -43,15 +49,38 @@ public class NewsFragment extends Fragment implements AppCompatCallback{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        toolbar = (Toolbar)activity.findViewById(R.id.toolbar);
-        viewPager = (ViewPager) activity.findViewById(R.id.viewPager);
+        View rootView = inflater.inflate(R.layout.news_layout, container);
+        initViews();
+        return rootView;
+    }
 
+    private void initViews(){
+        initToolBar();
+        initViewPager();
+        initTablayout();
+    }
+
+    private void initToolBar() {
+        toolbar = (Toolbar)activity.findViewById(R.id.toolbar);
         appCompatDelegate = AppCompatDelegate.create(activity, this);
         appCompatDelegate.setSupportActionBar(toolbar);
+    }
 
-        viewPager.setAdapter(new NewsFragmentAdapter(activity.getSupportFragmentManager()));
-//        return inflater.inflate(container.getId(),container);
-        return null;
+    private void initViewPager(){
+        viewPager = (ViewPager) activity.findViewById(R.id.viewPager);
+        NewsFragmentAdapter newsFragmentAdapter = new NewsFragmentAdapter(activity.getSupportFragmentManager());
+        viewPager.setAdapter(newsFragmentAdapter);
+    }
+
+    private void initTablayout(){
+        tabLayout = (TabLayout) activity.findViewById(R.id.tablayout);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayout.addTab(tabLayout.newTab().setText("Tops"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tech"));
+        tabLayout.addTab(tabLayout.newTab().setText("Sports"));
+        tabLayout.addTab(tabLayout.newTab().setText("Locals"));
+        tabLayout.addTab(tabLayout.newTab().setText("EnterTain"));
     }
 
     @Override
