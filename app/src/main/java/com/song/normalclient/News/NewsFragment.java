@@ -49,7 +49,7 @@ public class NewsFragment extends Fragment implements AppCompatCallback{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.news_layout, container);
+        View rootView = inflater.inflate(R.layout.news_layout, container, false);
         initViews();
         return rootView;
     }

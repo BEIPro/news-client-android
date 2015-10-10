@@ -17,13 +17,10 @@ import java.util.ArrayList;
  */
 public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
 
-    private static final String TAG = "TaggedFragmentStatePagerAdapter";
-
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
     private ArrayList<Fragment.SavedState> savedStates = new ArrayList<Fragment.SavedState>();
-    private DebugClass debugClass = new DebugClass();
 
     public TaggedFragmentStatePagerAdapter(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -41,7 +38,6 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Log.d(TAG, "start to add a fragment " + position);
         if(fragments.size() < position){
             if(fragments.get(position) != null){
                 return fragments.get(position);
@@ -60,7 +56,6 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
         fragmentTransaction.add(container.getId(), fragment);
         fragments.set(position, fragment);
 
-        Log.d(TAG, "add a fragment " + position);
         return fragment;
     }
 
@@ -78,13 +73,5 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
 
-    }
-
-    private class DebugClass extends LogDebug{
-
-        @Override
-        public void log(boolean DBG, String Tag, String logMsg) {
-            parantLog(DBG, Tag, logMsg);
-        }
     }
 }
