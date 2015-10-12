@@ -35,6 +35,7 @@ public class NewsFragment extends Fragment implements AppCompatCallback{
     private AppCompatActivity activity;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private View rootView;
 
 
     public NewsFragment() {
@@ -49,7 +50,7 @@ public class NewsFragment extends Fragment implements AppCompatCallback{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.news_layout, container, false);
+        rootView = inflater.inflate(R.layout.news_layout, container, false);
         initViews();
         return rootView;
     }
@@ -61,19 +62,18 @@ public class NewsFragment extends Fragment implements AppCompatCallback{
     }
 
     private void initToolBar() {
-        toolbar = (Toolbar)activity.findViewById(R.id.toolbar);
-        appCompatDelegate = AppCompatDelegate.create(activity, this);
-        appCompatDelegate.setSupportActionBar(toolbar);
+        toolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
+        activity.setSupportActionBar(toolbar);
     }
 
     private void initViewPager(){
-        viewPager = (ViewPager) activity.findViewById(R.id.viewPager);
+        viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
         NewsFragmentAdapter newsFragmentAdapter = new NewsFragmentAdapter(activity.getSupportFragmentManager());
         viewPager.setAdapter(newsFragmentAdapter);
     }
 
     private void initTablayout(){
-        tabLayout = (TabLayout) activity.findViewById(R.id.tablayout);
+        tabLayout = (TabLayout) rootView.findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.addTab(tabLayout.newTab().setText("Tops"));
