@@ -14,6 +14,9 @@ import com.song.normalclient.R;
  * Created by songsubei on 01/10/15.
  */
 public class NewsFragmentAdapter extends TaggedFragmentStatePagerAdapter {
+
+    private String[] categories = {"Top News", "Tech", "Sport", "Local", "Entertain"};
+
     public NewsFragmentAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
@@ -34,5 +37,20 @@ public class NewsFragmentAdapter extends TaggedFragmentStatePagerAdapter {
                 return new EnterTainNewsFragment(R.layout.entertain_news_fragment);
         }
         return null;
+    }
+
+    @Override
+    public String getTag(int position) {
+        return "TMP" + position;
+    }
+
+    @Override
+    public int getCount() {
+        return categories.length;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return categories[position];
     }
 }

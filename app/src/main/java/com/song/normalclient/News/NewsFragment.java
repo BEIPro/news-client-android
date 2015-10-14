@@ -63,6 +63,7 @@ public class NewsFragment extends Fragment implements AppCompatCallback{
 
     private void initToolBar() {
         toolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
+        toolbar.setTitle("33oz");
         activity.setSupportActionBar(toolbar);
     }
 
@@ -76,11 +77,22 @@ public class NewsFragment extends Fragment implements AppCompatCallback{
         tabLayout = (TabLayout) rootView.findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.addTab(tabLayout.newTab().setText("Tops"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tech"));
-        tabLayout.addTab(tabLayout.newTab().setText("Sports"));
-        tabLayout.addTab(tabLayout.newTab().setText("Locals"));
-        tabLayout.addTab(tabLayout.newTab().setText("EnterTain"));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override

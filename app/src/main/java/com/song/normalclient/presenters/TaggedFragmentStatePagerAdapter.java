@@ -21,6 +21,7 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
     private FragmentTransaction fragmentTransaction;
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
     private ArrayList<Fragment.SavedState> savedStates = new ArrayList<Fragment.SavedState>();
+    private Fragment mCurrentPrimaryItem = null;
 
     public TaggedFragmentStatePagerAdapter(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -33,7 +34,7 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return false;
+        return ((Fragment) object).getView() == view;
     }
 
     @Override
@@ -44,7 +45,7 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
             }
         }
 
-        while (fragments.size() >= position){
+        while (fragments.size() <= position){
             fragments.add(null);
         }
 
@@ -53,21 +54,47 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
         }
 
         Fragment fragment = getItem(position);
-        fragmentTransaction.add(container.getId(), fragment);
+        if (savedStates.size() > position) {
+            Fragment.SavedState fss = savedStates.get(position);
+            if (fss != null) {
+                fragment.setInitialSavedState(fss);
+            }
+        }
+
+        fragment.setMenuVisibility(false);
+        fragment.setUserVisibleHint(false);
+        fragmentTransaction.add(container.getId(), fragment, getTag(position));
         fragments.set(position, fragment);
 
         return fragment;
     }
 
     public abstract Fragment getItem(int position);
+    public abstract String getTag(int position);
 
     @Override
     public void finishUpdate(View container) {
         if (fragmentTransaction != null) {
             fragmentTransaction.commitAllowingStateLoss();
+            fragmentTransaction = null;
+            fragmentManager.executePendingTransactions();
         }
-        fragmentTransaction = null;
-        fragmentManager.executePendingTransactions();
+    }
+
+    @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        Fragment fragment = (Fragment) object;
+        if (fragment != mCurrentPrimaryItem) {
+            if (mCurrentPrimaryItem != null) {
+                mCurrentPrimaryItem.setMenuVisibility(false);
+                mCurrentPrimaryItem.setUserVisibleHint(false);
+            }
+            if (fragment != null) {
+                fragment.setMenuVisibility(true);
+                fragment.setUserVisibleHint(true);
+            }
+            mCurrentPrimaryItem = fragment;
+        }
     }
 
     @Override

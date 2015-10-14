@@ -29,7 +29,7 @@ public class BaseNewsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(layoutSrcId, container);
+        View rootView = inflater.inflate(layoutSrcId, container, false);
 
         return rootView;
     }
