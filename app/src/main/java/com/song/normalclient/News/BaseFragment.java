@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 /**
  * Created by songsubei on 27/09/15.
  */
-public class BaseNewsFragment extends Fragment {
+public class BaseFragment extends Fragment {
 
     private int layoutSrcId;
 
-    public BaseNewsFragment() {
+    public BaseFragment() {
     }
 
-    public BaseNewsFragment(int layoutSrcId) {
+    public BaseFragment(int layoutSrcId) {
         this.layoutSrcId = layoutSrcId;
     }
 
@@ -30,7 +30,6 @@ public class BaseNewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(layoutSrcId, container, false);
-
         return rootView;
     }
 }

@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 /**
  * Created by songsubei on 27/09/15.
  */
-public class TopNewsFragment extends BaseNewsFragment {
+public class TopNewsFragment extends BaseFragment {
 
     public TopNewsFragment(int layoutSrcId) {
         super(layoutSrcId);

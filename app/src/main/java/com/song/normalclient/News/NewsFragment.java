@@ -28,17 +28,16 @@ import com.song.normalclient.presenters.NewsFragmentAdapter;
 /**
  * Created by songsubei on 27/09/15.
  */
-public class NewsFragment extends Fragment implements AppCompatCallback{
+public class NewsFragment extends BaseFragment implements AppCompatCallback{
 
-    private AppCompatDelegate appCompatDelegate;
     private Toolbar toolbar;
     private AppCompatActivity activity;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private View rootView;
 
-
-    public NewsFragment() {
+    public NewsFragment(int layoutSrcId) {
+        super(layoutSrcId);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class NewsFragment extends Fragment implements AppCompatCallback{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.news_layout, container, false);
+        rootView = super.onCreateView(inflater, container, savedInstanceState);
         initViews();
         return rootView;
     }

@@ -1,12 +1,15 @@
 package com.song.normalclient.News;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.song.normalclient.R;
+import com.song.normalclient.presenters.MainLayoutAdapter;
 
 
 /**
@@ -14,17 +17,51 @@ import com.song.normalclient.R;
  */
 public class MNewsActivity extends AppCompatActivity{
 
-    private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
 
-        fragmentManager = getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.main_layout, new NewsFragment());
-        fragmentTransaction.commit();
+        initViews();
+        /*fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.main_layout, new NewsFragment(R.layout.news_layout));
+        fragmentTransaction.commit()*/;
+    }
+
+    void initViews(){
+
+        initViewPager();
+        initTablayout();
+    }
+
+    void initViewPager(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        viewPager = (ViewPager) findViewById(R.id.main_viewpager);
+        viewPager.setAdapter(new MainLayoutAdapter(fragmentManager));
+    }
+
+    void initTablayout(){
+        tabLayout = (TabLayout) findViewById(R.id.main_tablayout);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 }
