@@ -39,7 +39,7 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        if(fragments.size() < position){
+        if(fragments.size() > position){
             if(fragments.get(position) != null){
                 return fragments.get(position);
             }
@@ -97,8 +97,20 @@ public abstract class TaggedFragmentStatePagerAdapter extends PagerAdapter {
         }
     }
 
+
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
+        Fragment fragment = (Fragment) object;
 
+        if (fragmentTransaction == null) {
+            fragmentTransaction = fragmentManager.beginTransaction();
+        }
+        while (savedStates.size() <= position) {
+            savedStates.add(null);
+        }
+        savedStates.set(position, fragmentManager.saveFragmentInstanceState(fragment));
+        fragments.set(position, null);
+
+        fragmentTransaction.remove(fragment);
     }
 }

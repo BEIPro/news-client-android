@@ -27,9 +27,6 @@ public class MNewsActivity extends AppCompatActivity{
         setContentView(R.layout.main_layout);
 
         initViews();
-        /*fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.main_layout, new NewsFragment(R.layout.news_layout));
-        fragmentTransaction.commit()*/;
     }
 
     void initViews(){
@@ -40,7 +37,7 @@ public class MNewsActivity extends AppCompatActivity{
 
     void initViewPager(){
         FragmentManager fragmentManager = getSupportFragmentManager();
-        viewPager = (ViewPager) findViewById(R.id.main_viewpager);
+        viewPager = (ViewPager) findViewById(R.id.main_unscrollableviewpager);
         viewPager.setAdapter(new MainLayoutAdapter(fragmentManager));
     }
 

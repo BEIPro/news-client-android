@@ -24,18 +24,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.song.normalclient.Views.UnScrollableViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </com.song.normalclient.Views.UnScrollableViewPager>
-    <!--<android.support.v4.view.ViewPager
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </android.support.v4.view.ViewPager>-->
+    </android.support.v4.view.ViewPager>
 
 
 </android.support.design.widget.CoordinatorLayout>

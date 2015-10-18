@@ -6,19 +6,19 @@
     android:layout_height="fill_parent"
     >
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/main_viewpager"
+    <com.song.normalclient.Views.UnScrollableViewPager
+        android:id="@+id/main_unscrollableviewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
-    </android.support.v4.view.ViewPager>
+    </com.song.normalclient.Views.UnScrollableViewPager>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/main_tablayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabIndicatorColor="@color/abc_search_url_text_pressed"
-        app:tabTextColor="@color/error_color">
+        app:tabTextColor="@color/switch_thumb_disabled_material_dark">
 
     </android.support.design.widget.TabLayout>
 </LinearLayout>
