@@ -12,6 +12,9 @@ public class LocalNewsFragment extends BaseFragment {
         super(layoutSrcId);
     }
 
+    public LocalNewsFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

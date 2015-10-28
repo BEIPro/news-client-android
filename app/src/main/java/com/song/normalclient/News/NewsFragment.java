@@ -40,6 +40,9 @@ public class NewsFragment extends BaseFragment implements AppCompatCallback{
         super(layoutSrcId);
     }
 
+    public NewsFragment(){
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

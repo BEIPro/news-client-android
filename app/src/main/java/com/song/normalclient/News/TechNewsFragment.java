@@ -12,6 +12,9 @@ public class TechNewsFragment extends BaseFragment {
         super(layoutSrcId);
     }
 
+    public TechNewsFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

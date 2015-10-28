@@ -7,4 +7,7 @@ public class TradeFragment extends BaseFragment {
     public TradeFragment(int layoutSrcId) {
         super(layoutSrcId);
     }
+
+    public TradeFragment() {
+    }
 }

@@ -7,4 +7,7 @@ public class LifeFragment extends BaseFragment {
     public LifeFragment(int layoutSrcId) {
         super(layoutSrcId);
     }
+
+    public LifeFragment() {
+    }
 }

@@ -12,13 +12,13 @@ import android.view.ViewGroup;
  */
 public class BaseFragment extends Fragment {
 
-    private int layoutSrcId;
-
     public BaseFragment() {
     }
 
     public BaseFragment(int layoutSrcId) {
-        this.layoutSrcId = layoutSrcId;
+        Bundle bundle = new Bundle();
+        bundle.putInt("srcId", layoutSrcId);
+        setArguments(bundle);
     }
 
     @Override
@@ -29,7 +29,14 @@ public class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(layoutSrcId, container, false);
+        Bundle bundle = getArguments();
+        View rootView = null;
+        if (bundle != null){
+            int srcId;
+                if ((srcId = bundle.getInt("srcId")) != 0){
+                    rootView = inflater.inflate(srcId, container, false);
+                }
+        }
         return rootView;
     }
 }

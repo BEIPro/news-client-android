@@ -12,6 +12,9 @@ public class SportNewsFragment extends BaseFragment {
         super(layoutSrcId);
     }
 
+    public SportNewsFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

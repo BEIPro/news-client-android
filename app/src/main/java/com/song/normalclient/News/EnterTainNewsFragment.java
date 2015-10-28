@@ -12,6 +12,9 @@ public class EnterTainNewsFragment extends BaseFragment {
         super(layoutSrcId);
     }
 
+    public EnterTainNewsFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

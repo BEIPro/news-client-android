@@ -1,5 +1,6 @@
 package com.song.normalclient.News;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +21,11 @@ public class MNewsActivity extends AppCompatActivity{
     private FragmentTransaction fragmentTransaction;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

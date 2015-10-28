@@ -14,6 +14,7 @@
             android:layout_height="?attr/actionBarSize">
         </android.support.v7.widget.Toolbar>
         <android.support.design.widget.TabLayout
+            android:background="@color/dim_foreground_material_dark"
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

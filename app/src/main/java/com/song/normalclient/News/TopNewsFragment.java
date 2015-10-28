@@ -12,10 +12,11 @@ public class TopNewsFragment extends BaseFragment {
         super(layoutSrcId);
     }
 
+    public TopNewsFragment() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-
 }
