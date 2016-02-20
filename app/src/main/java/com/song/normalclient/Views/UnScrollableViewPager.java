@@ -29,7 +29,6 @@ public class UnScrollableViewPager extends ViewPager {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        this.getParent().requestDisallowInterceptTouchEvent(false);
         return super.dispatchTouchEvent(ev);
     }
 }

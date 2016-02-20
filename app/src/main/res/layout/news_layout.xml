@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabIndicatorColor="@color/abc_search_url_text_pressed"
-            app:tabSelectedTextColor="@color/error_color"
+            app:tabSelectedTextColor="@color/design_textinput_error_color"
             app:tabTextColor="@color/accent_material_light">
 
         </android.support.design.widget.TabLayout>
