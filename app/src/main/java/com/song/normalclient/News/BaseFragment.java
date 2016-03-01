@@ -35,8 +35,12 @@ public class BaseFragment extends Fragment {
             int srcId;
                 if ((srcId = bundle.getInt("srcId")) != 0){
                     rootView = inflater.inflate(srcId, container, false);
+                    initViews(rootView);
                 }
         }
         return rootView;
     }
+
+    void initViews(View rootView){
+    };
 }

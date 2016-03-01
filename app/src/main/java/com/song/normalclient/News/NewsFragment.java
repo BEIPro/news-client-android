@@ -49,15 +49,9 @@ public class NewsFragment extends BaseFragment implements AppCompatCallback{
         this.activity = (AppCompatActivity) activity;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = super.onCreateView(inflater, container, savedInstanceState);
-        initViews();
-        return rootView;
-    }
-
-    private void initViews(){
+    void initViews(View rootView) {
+        this.rootView = rootView;
         initToolBar();
         initViewPager();
         initTablayout();
