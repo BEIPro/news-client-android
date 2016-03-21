@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.song.normalclient.Data.NewsItem;
 import com.song.normalclient.R;
 
 import java.util.List;
@@ -24,12 +25,11 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
         void onClick();
     }
 
-    private List newsList;
+    private List<NewsItem> newsList;
     private NewsRecycleViewListener newsRecycleViewListener;
 
-    public NewsRecycleViewAdapter(){
-//        this.newsList = newsList;
-        Log.w("kidding me?", "???");
+    public NewsRecycleViewAdapter(List<NewsItem> newsList){
+        this.newsList = newsList;
     }
 
     public void setOnRecycleViewAdapter(NewsRecycleViewListener newsRecycleViewListener){
@@ -49,22 +49,23 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         NewsViewHolder viewHolder = (NewsViewHolder) holder;
-//        viewHolder.imageView.setBackground(R.drawable.mail_alt);
-        viewHolder.breviaryNewsTextView.setText("Fucking news" + position);
-        viewHolder.commentNumTextView.setText("Fucking itemNum");
-        viewHolder.titleTextView.setText("Fucking title");
+        NewsItem newsItem = newsList.get(position);
+        viewHolder.imageView.setImageBitmap(newsItem.getScaleImg());
+        viewHolder.breviaryNewsTextView.setText(newsItem.getBrief());
+        viewHolder.newsType.setText(newsItem.getType());
+        viewHolder.titleTextView.setText(newsItem.getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        return newsList.size();
     }
 
     class NewsViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener{
 
         ImageView imageView;
         TextView titleTextView;
-        TextView commentNumTextView;
+        TextView newsType;
         TextView breviaryNewsTextView;
 
         public NewsViewHolder(View itemView) {
@@ -72,7 +73,7 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
 //            linearLayout.setOnClickListener(this);
             imageView = (ImageView) itemView.findViewById(R.id.breviary_image);
             titleTextView = (TextView) itemView.findViewById(R.id.breviary_title);
-            commentNumTextView = (TextView) itemView.findViewById(R.id.breviary_comments_num);
+            newsType = (TextView) itemView.findViewById(R.id.news_type);
             breviaryNewsTextView = (TextView) itemView.findViewById(R.id.breviary_news);
         }
 

@@ -21,17 +21,12 @@
             app:tabIndicatorColor="@color/abc_search_url_text_pressed"
             app:tabSelectedTextColor="@color/design_textinput_error_color"
             app:tabTextColor="@color/accent_material_light">
-
         </android.support.design.widget.TabLayout>
-
     </android.support.design.widget.AppBarLayout>
-
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
     </android.support.v4.view.ViewPager>
-
-
 </android.support.design.widget.CoordinatorLayout>

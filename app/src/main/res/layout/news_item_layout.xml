@@ -10,7 +10,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="2"
-        android:background="@drawable/mail_alt"
         android:id="@+id/breviary_image"/>
 
     <LinearLayout
@@ -32,7 +31,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/breviary_comments_num"
-        android:text="news comments number"/>
+        android:id="@+id/news_type"
+        android:text="news type"/>
     </LinearLayout>
 </LinearLayout>

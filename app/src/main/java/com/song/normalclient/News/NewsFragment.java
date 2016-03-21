@@ -18,7 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-
+import com.android.volley.RequestQueue;
 import com.song.normalclient.R;
 import com.song.normalclient.presenters.NewsFragmentAdapter;
 

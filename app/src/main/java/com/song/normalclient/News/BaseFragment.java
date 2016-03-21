@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 /**
  * Created by songsubei on 27/09/15.
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     public BaseFragment() {
     }
@@ -41,6 +41,5 @@ public class BaseFragment extends Fragment {
         return rootView;
     }
 
-    void initViews(View rootView){
-    };
+    abstract void initViews(View rootView);
 }
