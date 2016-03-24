@@ -3,7 +3,7 @@ package com.song.normalclient.News;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
+import android.os.*;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,17 +11,31 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.song.normalclient.Data.MNewsAPI;
+import com.song.normalclient.Data.MNewsContract;
 import com.song.normalclient.Data.NewsItem;
 import com.song.normalclient.R;
 import com.song.normalclient.presenters.NewsRecycleViewAdapter;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+
+import rx.Observable;
+import rx.Scheduler;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by songsubei on 27/09/15.
  */
 public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
+
+    private static final String TAG = "TopNewsFragment";
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -57,12 +71,38 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(newsRecycleViewAdapter);
+        Log.e("fuck", "?????" + android.os.Process.myTid());
         recyclerView.setOnScrollListener(new UpPullLoadListner(layoutManager) {
             @Override
             void onLoadMore() {
-                newsList.add(new NewsItem(tmpBitmap, "??+" + add++, "?+?+?" + add++,
-                        "??+++??" + add++));
-                newsRecycleViewAdapter.notifyDataSetChanged();
+                android.os.Handler handler = new android.os.Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        MNewsAPI.creatRequestQueue(context);
+                        Observable.just(MNewsContract.URL)
+                                .subscribeOn(Schedulers.io())
+                                .map(new Func1<String, Object>() {
+                                    @Override
+                                    public Object call(String s) {
+                                        Log.e(TAG, s);
+                                        return MNewsAPI.getJsonArray(s);
+                                    }
+                                }).subscribe(new Action1<Object>() {
+                            @Override
+                            public void call(Object o) {
+                                Log.e(TAG, o.toString());
+                            }
+                        });
+
+
+                        Log.e(TAG, "???" + android.os.Process.myTid());
+//                        Log.e("fuck", String.valueOf(MNewsAPI.getJsonArray(MNewsContract.URL)));
+                        newsList.add(new NewsItem(tmpBitmap, "??+" + add++, "?+?+?" + add++,
+                                "??+++??" + add++));
+                        newsRecycleViewAdapter.notifyDataSetChanged();
+                    }
+                }, 2500);
             }
         });
     }

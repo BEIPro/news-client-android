@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.song.normalclient.Data.NewsItem;
@@ -25,6 +26,10 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
         void onClick();
     }
 
+    private static final int TYPE_FOOTER = 1;
+    private static final int TYPE_ITEM = 0;
+
+
     private List<NewsItem> newsList;
     private NewsRecycleViewListener newsRecycleViewListener;
 
@@ -38,35 +43,43 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item_layout, null);
-        LinearLayout.LayoutParams params;
-        WindowManager windowManager = (WindowManager) parent.getContext().getSystemService(Context.WINDOW_SERVICE);
-        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, windowManager.getDefaultDisplay().getHeight()/6);
-        view.setLayoutParams(params);
-        return new NewsViewHolder(view);
+        if(viewType == TYPE_ITEM) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item_layout, null);
+            LinearLayout.LayoutParams params;
+            WindowManager windowManager = (WindowManager) parent.getContext().getSystemService(Context.WINDOW_SERVICE);
+            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, windowManager.getDefaultDisplay().getHeight() / 6);
+            view.setLayoutParams(params);
+            return new NewsViewHolder(view);
+        }
+        else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_recycleview_foot_view, null);
+            return new FootViewHolder(view);
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        NewsViewHolder viewHolder = (NewsViewHolder) holder;
-        NewsItem newsItem = newsList.get(position);
-        viewHolder.imageView.setImageBitmap(newsItem.getScaleImg());
-        viewHolder.breviaryNewsTextView.setText(newsItem.getBrief());
-        viewHolder.newsType.setText(newsItem.getType());
-        viewHolder.titleTextView.setText(newsItem.getTitle());
+        if(holder instanceof NewsViewHolder) {
+            NewsViewHolder viewHolder = (NewsViewHolder) holder;
+            NewsItem newsItem = newsList.get(position);
+            viewHolder.imageView.setImageBitmap(newsItem.getScaleImg());
+            viewHolder.breviaryNewsTextView.setText(newsItem.getBrief());
+            viewHolder.newsType.setText(newsItem.getType());
+            viewHolder.titleTextView.setText(newsItem.getTitle());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return newsList.size();
+        return newsList.size() + 1;
     }
 
     class NewsViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener{
 
-        ImageView imageView;
-        TextView titleTextView;
-        TextView newsType;
-        TextView breviaryNewsTextView;
+        private ImageView imageView;
+        private TextView titleTextView;
+        private TextView newsType;
+        private TextView breviaryNewsTextView;
 
         public NewsViewHolder(View itemView) {
             super(itemView);
@@ -80,6 +93,28 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
         @Override
         public void onClick(View v) {
             newsRecycleViewListener.onClick();
+        }
+    }
+
+    class FootViewHolder extends RecyclerView.ViewHolder{
+
+        private ProgressBar progressBar;
+        private TextView textView;
+
+        public FootViewHolder(View itemView) {
+            super(itemView);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.foot_progressbar);
+            textView = (TextView) itemView.findViewById(R.id.foot_view_item_tv);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == getItemCount() - 1){
+            return TYPE_FOOTER;
+        }
+        else {
+            return TYPE_ITEM;
         }
     }
 }
