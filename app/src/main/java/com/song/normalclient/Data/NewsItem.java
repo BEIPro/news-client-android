@@ -2,6 +2,8 @@ package com.song.normalclient.Data;
 
 import android.graphics.Bitmap;
 
+import java.net.URL;
+
 /**
  * Created by songsubei on 20/03/16.
  */
@@ -11,12 +13,14 @@ public class NewsItem{
     private String title;
     private String brief;
     private String type;
+    private URL url;
 
     public NewsItem(Bitmap scaleImg, String title, String brief, String type) {
         this.scaleImg = scaleImg;
         this.title = title;
         this.brief = brief;
         this.type = type;
+//        this.url = url;
     }
 
     public Bitmap getScaleImg() {
@@ -49,5 +53,13 @@ public class NewsItem{
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public URL getUrl() {
+        return url;
+    }
+
+    public void setUrl(URL url) {
+        this.url = url;
     }
 }
