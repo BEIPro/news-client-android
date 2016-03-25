@@ -1,6 +1,7 @@
 package com.song.normalclient.presenters;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.song.normalclient.Data.NewsItem;
+import com.song.normalclient.Data.NewsList;
 import com.song.normalclient.R;
 
 import java.util.List;
@@ -30,10 +32,10 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
     private static final int TYPE_ITEM = 0;
 
 
-    private List<NewsItem> newsList;
+    private List<NewsList.news> newsList;
     private NewsRecycleViewListener newsRecycleViewListener;
 
-    public NewsRecycleViewAdapter(List<NewsItem> newsList){
+    public NewsRecycleViewAdapter(List<NewsList.news> newsList){
         this.newsList = newsList;
     }
 
@@ -61,10 +63,9 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof NewsViewHolder) {
             NewsViewHolder viewHolder = (NewsViewHolder) holder;
-            NewsItem newsItem = newsList.get(position);
-            viewHolder.imageView.setImageBitmap(newsItem.getScaleImg());
-            viewHolder.breviaryNewsTextView.setText(newsItem.getBrief());
-            viewHolder.newsType.setText(newsItem.getType());
+            NewsList.news newsItem = newsList.get(position);
+            viewHolder.breviaryNewsTextView.setText(newsItem.getDescription());
+            viewHolder.newsType.setText(newsItem.getCtime());
             viewHolder.titleTextView.setText(newsItem.getTitle());
         }
     }

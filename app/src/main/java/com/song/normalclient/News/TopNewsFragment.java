@@ -11,13 +11,16 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.song.normalclient.Data.MNewsAPI;
 import com.song.normalclient.Data.MNewsContract;
 import com.song.normalclient.Data.NewsItem;
+import com.song.normalclient.Data.NewsList;
 import com.song.normalclient.R;
 import com.song.normalclient.presenters.NewsRecycleViewAdapter;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,7 @@ import java.util.logging.LogRecord;
 
 import rx.Observable;
 import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -40,11 +44,11 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Context context;
-    private List<NewsItem> newsList;
+    private List<NewsList.news> newsList;
     private NewsRecycleViewAdapter newsRecycleViewAdapter;
-    private static int add;
+    private View rootView;
 
-    private Bitmap tmpBitmap;
+    private boolean firstIn = true;
 
     public TopNewsFragment(int layoutSrcId) {
         super(layoutSrcId);
@@ -60,8 +64,9 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     void initViews(View rootView) {
-        initList();
-        initRecycleView(rootView);
+        this.rootView = rootView;
+        MNewsAPI.creatRequestQueue(context);
+        onRefresh();
         initSwipRefreshLayout(rootView);
     }
 
@@ -71,38 +76,20 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(newsRecycleViewAdapter);
-        Log.e("fuck", "?????" + android.os.Process.myTid());
+        Log.e(TAG, "initRecycleView" + android.os.Process.myTid());
         recyclerView.setOnScrollListener(new UpPullLoadListner(layoutManager) {
             @Override
             void onLoadMore() {
-                android.os.Handler handler = new android.os.Handler();
+
+
+                /*android.os.Handler handler = new android.os.Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        MNewsAPI.creatRequestQueue(context);
-                        Observable.just(MNewsContract.URL)
-                                .subscribeOn(Schedulers.io())
-                                .map(new Func1<String, Object>() {
-                                    @Override
-                                    public Object call(String s) {
-                                        Log.e(TAG, s);
-                                        return MNewsAPI.getJsonArray(s);
-                                    }
-                                }).subscribe(new Action1<Object>() {
-                            @Override
-                            public void call(Object o) {
-                                Log.e(TAG, o.toString());
-                            }
-                        });
-
-
-                        Log.e(TAG, "???" + android.os.Process.myTid());
-//                        Log.e("fuck", String.valueOf(MNewsAPI.getJsonArray(MNewsContract.URL)));
-                        newsList.add(new NewsItem(tmpBitmap, "??+" + add++, "?+?+?" + add++,
-                                "??+++??" + add++));
+                        Log.e(TAG, "onLoadMore" + android.os.Process.myTid());
                         newsRecycleViewAdapter.notifyDataSetChanged();
                     }
-                }, 2500);
+                }, 2500);*/
             }
         });
     }
@@ -124,19 +111,24 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        newsList.set(0, new NewsItem(tmpBitmap, "??" + add++, "???" + add++, "????" + add++));
+        MNewsAPI.GetNewsList(MNewsContract.HTTPURL, MNewsContract.HTTPARG).
+                observeOn(AndroidSchedulers.mainThread()).
+                subscribe(new Action1<List<NewsList.news>>() {
 
-        newsRecycleViewAdapter.notifyDataSetChanged();
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
-
-    void initList(){
-        tmpBitmap = BitmapFactory.decodeResource(this.getContext().getResources(),
-                R.drawable.mail_alt);
-        newsList = new ArrayList<>();
-        for(int i = 0; i < 10; i++)
-            newsList.add(new NewsItem(tmpBitmap, "??" +i, "???" + i, "????" + i));
+                    @Override
+                    public void call(List<NewsList.news> newses) {
+//                        swapNewsList(newses, newsList);
+                        newsList = newses;
+                        if (firstIn) {
+                            initRecycleView(rootView);
+                            firstIn = false;
+                        }
+                    }
+                });
+        if (!firstIn) {
+            newsRecycleViewAdapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     abstract class UpPullLoadListner extends RecyclerView.OnScrollListener{
@@ -167,13 +159,18 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
             }
             if (!loading
                     && (totalItemCount - visibleItemCount) <= firstVisibleItem) {
-//                currentPage++;
                 onLoadMore();
                 loading = true;
             }
         }
 
         abstract void onLoadMore();
+    }
+
+    void swapNewsList(List<NewsList.news> srcNewses, List<NewsList.news> dirNewses){
+        for (int i = 0; i < 10 ; i++){
+            srcNewses.set(i, dirNewses.get(i));
+        }
     }
 
 }
