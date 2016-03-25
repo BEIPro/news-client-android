@@ -47,10 +47,7 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == TYPE_ITEM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item_layout, null);
-            LinearLayout.LayoutParams params;
-            WindowManager windowManager = (WindowManager) parent.getContext().getSystemService(Context.WINDOW_SERVICE);
-            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, windowManager.getDefaultDisplay().getHeight() / 6);
-            view.setLayoutParams(params);
+
             return new NewsViewHolder(view);
         }
         else {
@@ -64,8 +61,16 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
         if(holder instanceof NewsViewHolder) {
             NewsViewHolder viewHolder = (NewsViewHolder) holder;
             NewsList.news newsItem = newsList.get(position);
-            viewHolder.breviaryNewsTextView.setText(newsItem.getDescription());
-            viewHolder.newsType.setText(newsItem.getCtime());
+
+            LinearLayout.LayoutParams params;
+            WindowManager windowManager = (WindowManager) viewHolder.itemView.getContext().getSystemService(Context.WINDOW_SERVICE);
+            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, windowManager.getDefaultDisplay().getHeight() / 6);
+            viewHolder.itemView.setLayoutParams(params);
+            params = new LinearLayout.LayoutParams(windowManager.getDefaultDisplay().getWidth() / 3, LinearLayout.LayoutParams.MATCH_PARENT);
+            viewHolder.imageView.setLayoutParams(params);
+
+            viewHolder.newsSrcTextView.setText(newsItem.getDescription());
+            viewHolder.newsTime.setText(newsItem.getCtime());
             viewHolder.titleTextView.setText(newsItem.getTitle());
         }
     }
@@ -79,16 +84,18 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
 
         private ImageView imageView;
         private TextView titleTextView;
-        private TextView newsType;
-        private TextView breviaryNewsTextView;
+        private TextView newsTime;
+        private TextView newsSrcTextView;
+        private View itemView;
 
         public NewsViewHolder(View itemView) {
             super(itemView);
 //            linearLayout.setOnClickListener(this);
+            this.itemView = itemView;
             imageView = (ImageView) itemView.findViewById(R.id.breviary_image);
             titleTextView = (TextView) itemView.findViewById(R.id.breviary_title);
-            newsType = (TextView) itemView.findViewById(R.id.news_type);
-            breviaryNewsTextView = (TextView) itemView.findViewById(R.id.breviary_news);
+            newsTime = (TextView) itemView.findViewById(R.id.news_time);
+            newsSrcTextView = (TextView) itemView.findViewById(R.id.news_source);
         }
 
         @Override

@@ -1,8 +1,6 @@
 package com.song.normalclient.News;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.*;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,28 +9,14 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
-import com.google.gson.Gson;
 import com.song.normalclient.Data.MNewsAPI;
 import com.song.normalclient.Data.MNewsContract;
-import com.song.normalclient.Data.NewsItem;
 import com.song.normalclient.Data.NewsList;
 import com.song.normalclient.R;
 import com.song.normalclient.presenters.NewsRecycleViewAdapter;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
-import rx.Observable;
-import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by songsubei on 27/09/15.
