@@ -14,6 +14,8 @@ import com.song.normalclient.Data.MNewsContract;
 import com.song.normalclient.Data.NewsList;
 import com.song.normalclient.R;
 import com.song.normalclient.presenters.NewsRecycleViewAdapter;
+
+import java.util.ArrayList;
 import java.util.List;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -32,6 +34,10 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
     private NewsRecycleViewAdapter newsRecycleViewAdapter;
     private View rootView;
 
+    private static int currentPage = 1;
+
+    public static final int DATA_SWAP = 10;
+    public static final int DATA_ADD = 11;
     private boolean firstIn = true;
 
     public TopNewsFragment(int layoutSrcId) {
@@ -64,16 +70,20 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
         recyclerView.setOnScrollListener(new UpPullLoadListner(layoutManager) {
             @Override
             void onLoadMore() {
-
-
-                /*android.os.Handler handler = new android.os.Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.e(TAG, "onLoadMore" + android.os.Process.myTid());
-                        newsRecycleViewAdapter.notifyDataSetChanged();
-                    }
-                }, 2500);*/
+                MNewsAPI.GetNewsList(MNewsContract.HTTPURL, MNewsContract.HTTPARG, currentPage)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<List<NewsList.news>>() {
+                            @Override
+                            public void call(List<NewsList.news> newses) {
+                                if (newsList.size() <= currentPage *10){
+                                    swapNewsList(newses, currentPage, DATA_ADD);
+                                }
+                                else {
+                                    swapNewsList(newses, currentPage, DATA_SWAP);
+                                }
+                                newsRecycleViewAdapter.notifyDataSetChanged();
+                            }
+                        });
             }
         });
     }
@@ -95,17 +105,19 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        MNewsAPI.GetNewsList(MNewsContract.HTTPURL, MNewsContract.HTTPARG).
+        MNewsAPI.GetNewsList(MNewsContract.HTTPURL, MNewsContract.HTTPARG, 1).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new Action1<List<NewsList.news>>() {
 
                     @Override
                     public void call(List<NewsList.news> newses) {
-//                        swapNewsList(newses, newsList);
-                        newsList = newses;
                         if (firstIn) {
+                            swapNewsList(newses, 0, DATA_ADD);
                             initRecycleView(rootView);
                             firstIn = false;
+                        }
+                        else {
+                            swapNewsList(newses, 0, DATA_SWAP);
                         }
                     }
                 });
@@ -143,6 +155,7 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
             }
             if (!loading
                     && (totalItemCount - visibleItemCount) <= firstVisibleItem) {
+                currentPage++;
                 onLoadMore();
                 loading = true;
             }
@@ -151,9 +164,17 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
         abstract void onLoadMore();
     }
 
-    void swapNewsList(List<NewsList.news> srcNewses, List<NewsList.news> dirNewses){
-        for (int i = 0; i < 10 ; i++){
-            srcNewses.set(i, dirNewses.get(i));
+    void swapNewsList(List<NewsList.news> srcNewses, int pageNum, int swapOrAdd){
+        if(newsList == null){
+            newsList = new ArrayList<>();
+        }
+        if(swapOrAdd == DATA_SWAP) {
+            for (int i = 0; i < 10; i++) {
+                newsList.set(i + 10 * pageNum, srcNewses.get(i));
+            }
+        }
+        else if(swapOrAdd == DATA_ADD){
+            newsList.addAll(srcNewses);
         }
     }
 

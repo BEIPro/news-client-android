@@ -1,20 +1,16 @@
 package com.song.normalclient.presenters;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.song.normalclient.Data.NewsItem;
 import com.song.normalclient.Data.NewsList;
 import com.song.normalclient.R;
 
@@ -69,6 +65,7 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
             params = new LinearLayout.LayoutParams(windowManager.getDefaultDisplay().getWidth() / 3, LinearLayout.LayoutParams.MATCH_PARENT);
             viewHolder.imageView.setLayoutParams(params);
 
+            viewHolder.imageView.setImageBitmap(newsItem.getBitmap());
             viewHolder.newsSrcTextView.setText(newsItem.getDescription());
             viewHolder.newsTime.setText(newsItem.getCtime());
             viewHolder.titleTextView.setText(newsItem.getTitle());

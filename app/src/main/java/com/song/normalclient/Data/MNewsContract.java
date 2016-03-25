@@ -5,5 +5,5 @@ package com.song.normalclient.Data;
  */
 public class MNewsContract {
     public static final String HTTPURL = "http://apis.baidu.com/txapi/tiyu/tiyu";
-    public static final String HTTPARG = "num=10&page=1";
+    public static final String HTTPARG = "num=10&page=";
 }

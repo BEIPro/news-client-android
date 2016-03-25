@@ -1,10 +1,12 @@
 package com.song.normalclient.Data;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
@@ -49,19 +51,38 @@ public class MNewsAPI{
         });
 
     }*/
-    public static Observable GetNewsList(String url, String urlArgs){
-        return deferTransferNewsList(url, urlArgs).
+    public static Observable GetNewsList(String url, String urlArgs, int pageNum){
+        return deferTransferNewsList(url, urlArgs, pageNum).
                 subscribeOn(Schedulers.io()).
                 map(new Func1<JSONObject, List<NewsList.news>>() {
                     @Override
                     public List<NewsList.news> call(JSONObject jsonObject) {
                         return JsonToList(jsonObject);
                     }
-                });
+                }).
+                concatMap(new Func1<List<NewsList.news>, Observable<NewsList.news>>() {
+                    @Override
+                    public Observable<NewsList.news> call(List<NewsList.news> newses) {
+                        return Observable.from(newses);
+                    }
+                }).map(new Func1<NewsList.news, NewsList.news>() {
+
+            @Override
+            public NewsList.news call(NewsList.news news) {
+                try {
+                    GetNewsImage(news.getPicUrl(), news);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return news;
+            }
+        }).buffer(10);
     }
 
-    private static rx.Observable deferTransferNewsList(String url, String urlArgs){
-        final String mUrl = url + "?" + urlArgs;
+    private static rx.Observable deferTransferNewsList(String url, String urlArgs, int pageNum){
+        final String mUrl = url + "?" + urlArgs + pageNum;
         return rx.Observable.defer(new Func0<rx.Observable<JSONObject>>() {
             @Override
             public rx.Observable<JSONObject> call() {
@@ -109,6 +130,14 @@ public class MNewsAPI{
         NewsList newsList = gson.fromJson(jsonObject.toString(), NewsList.class);
 
         return newsList.newslist;
+    }
+
+    static void GetNewsImage(String url, NewsList.news news) throws ExecutionException, InterruptedException {
+        RequestFuture<Bitmap> requestFuture = RequestFuture.newFuture();
+        ImageRequest imageRequest = new ImageRequest(url, requestFuture, 0, 0, Bitmap.Config.RGB_565, requestFuture);
+        requestQueue.add(imageRequest);
+        Bitmap bitmap = requestFuture.get();
+        news.setBitmap(bitmap);
     }
 
 }

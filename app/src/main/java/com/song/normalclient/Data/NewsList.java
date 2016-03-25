@@ -1,5 +1,7 @@
 package com.song.normalclient.Data;
 
+import android.graphics.Bitmap;
+
 import java.util.List;
 
 /**
@@ -11,11 +13,20 @@ public class NewsList {
     public List<news> newslist;
 
     public static class news{
-        public String ctime;
-        public String title;
-        public String description;
-        public String picUrl;
-        public String url;
+        private String ctime;
+        private String title;
+        private String description;
+        private String picUrl;
+        private String url;
+        private Bitmap bitmap;
+
+        public Bitmap getBitmap() {
+            return bitmap;
+        }
+
+        public void setBitmap(Bitmap bitmap) {
+            this.bitmap = bitmap;
+        }
 
         public String getCtime() {
             return ctime;
