@@ -34,23 +34,6 @@ public class MNewsAPI{
 
     private static RequestQueue requestQueue;
 
-    /*Observable getTopNews(URL url){
-
-    }*/
-    /*public static JSONObject getJsonArray(String url){
-        return getNewsJsonArray(url);
-    }*/
-
-
-    /*private rx.Observable deferGetNewsJsonArray(final String url){
-        return rx.Observable.defer(new Func0<rx.Observable<NewsList.news>>() {
-            @Override
-            public rx.Observable<List<NewsList.news>> call() {
-                return rx.Observable.from(getNewsJsonArray(url));
-            }
-        });
-
-    }*/
     public static Observable GetNewsList(String url, String urlArgs, int pageNum){
         return deferTransferNewsList(url, urlArgs, pageNum).
                 subscribeOn(Schedulers.io()).
@@ -97,10 +80,6 @@ public class MNewsAPI{
 
 
     private static JSONObject getNewsJSONObject(String url){
-
-        /*if (requestQueue == null){
-            return null;
-        }*/
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, requestFuture, null){

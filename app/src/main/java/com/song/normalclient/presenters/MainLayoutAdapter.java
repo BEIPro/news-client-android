@@ -3,13 +3,8 @@ package com.song.normalclient.presenters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.song.normalclient.News.EnterTainNewsFragment;
 import com.song.normalclient.News.LifeFragment;
-import com.song.normalclient.News.LocalNewsFragment;
 import com.song.normalclient.News.NewsFragment;
-import com.song.normalclient.News.SportNewsFragment;
-import com.song.normalclient.News.TechNewsFragment;
-import com.song.normalclient.News.TopNewsFragment;
 import com.song.normalclient.News.TradeFragment;
 import com.song.normalclient.R;
 
