@@ -65,6 +65,13 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
         recyclerView = (RecyclerView) rootView.findViewById(R.id.top_news_recycleview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
+        newsRecycleViewAdapter.setOnItemClickedListner(new NewsRecycleViewAdapter.NewsRecycleViewListener() {
+            @Override
+            public void onClick(NewsList.news news) {
+                onItemClickListner onItemClickListner = (onItemClickListner)context;
+                onItemClickListner.onItemClicked(news);
+            }
+        });
         recyclerView.setAdapter(newsRecycleViewAdapter);
         Log.e(TAG, "initRecycleView" + android.os.Process.myTid());
         recyclerView.setOnScrollListener(new UpPullLoadListner(layoutManager) {
@@ -176,6 +183,10 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
         else if(swapOrAdd == DATA_ADD){
             newsList.addAll(srcNewses);
         }
+    }
+
+    public interface onItemClickListner{
+        void onItemClicked(NewsList.news news);
     }
 
 }

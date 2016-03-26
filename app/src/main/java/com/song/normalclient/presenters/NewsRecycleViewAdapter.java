@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
     public static interface NewsRecycleViewListener{
-        void onClick();
+        void onClick(NewsList.news news);
     }
 
     private static final int TYPE_FOOTER = 1;
@@ -35,7 +35,7 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
         this.newsList = newsList;
     }
 
-    public void setOnRecycleViewAdapter(NewsRecycleViewListener newsRecycleViewListener){
+    public void setOnItemClickedListner(NewsRecycleViewListener newsRecycleViewListener){
         this.newsRecycleViewListener = newsRecycleViewListener;
     }
 
@@ -69,6 +69,7 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
             viewHolder.newsSrcTextView.setText(newsItem.getDescription());
             viewHolder.newsTime.setText(newsItem.getCtime());
             viewHolder.titleTextView.setText(newsItem.getTitle());
+            viewHolder.itemView.setTag(newsItem);
         }
     }
 
@@ -77,7 +78,7 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
         return newsList.size() + 1;
     }
 
-    class NewsViewHolder extends RecyclerView.ViewHolder implements RecyclerView.OnClickListener{
+    class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private ImageView imageView;
         private TextView titleTextView;
@@ -87,7 +88,7 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
 
         public NewsViewHolder(View itemView) {
             super(itemView);
-//            linearLayout.setOnClickListener(this);
+            itemView.setOnClickListener(this);
             this.itemView = itemView;
             imageView = (ImageView) itemView.findViewById(R.id.breviary_image);
             titleTextView = (TextView) itemView.findViewById(R.id.breviary_title);
@@ -97,7 +98,7 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
 
         @Override
         public void onClick(View v) {
-            newsRecycleViewListener.onClick();
+            newsRecycleViewListener.onClick((NewsList.news) v.getTag());
         }
     }
 

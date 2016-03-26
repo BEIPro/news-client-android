@@ -2,24 +2,20 @@ package com.song.normalclient.News;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.song.normalclient.Data.NewsList;
 import com.song.normalclient.R;
-import com.song.normalclient.presenters.MainLayoutAdapter;
 
 
 /**
  * Created by songsubei on 26/09/15.
  */
-public class MNewsActivity extends AppCompatActivity{
+public class MNewsActivity extends AppCompatActivity implements TopNewsFragment.onItemClickListner{
 
-    private FragmentTransaction fragmentTransaction;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
+    private TopNewsDetailsFragment topNewsDetailsFragment;
+    private MainFragment mainFragment;
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -29,24 +25,41 @@ public class MNewsActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_layout);
+        setContentView(R.layout.main_activity_layout);
         initViews();
+        setMainFragment();
     }
 
     void initViews(){
-
-        initViewPager();
-        initTablayout();
+        initMainFragment();
+        initTopNewsDetailsFragment();
     }
 
-    void initViewPager(){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        viewPager = (ViewPager) findViewById(R.id.main_unscrollableviewpager);
-        viewPager.setAdapter(new MainLayoutAdapter(fragmentManager));
+    void initTopNewsDetailsFragment(){
+        topNewsDetailsFragment = new TopNewsDetailsFragment(R.layout.top_news_details_fragment);
     }
 
-    void initTablayout(){
-        tabLayout = (TabLayout) findViewById(R.id.main_tablayout);
-        tabLayout.setupWithViewPager(viewPager);
+    void initMainFragment(){
+        mainFragment = new MainFragment(R.layout.main_layout);
+    }
+
+    void setMainFragment(){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.main_activity_layout, mainFragment, null);
+        fragmentTransaction.commit();
+    }
+
+    void setTopNewsDetailsFragment(){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.hide(mainFragment);
+        fragmentTransaction.add(R.id.main_activity_layout, topNewsDetailsFragment, null);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onItemClicked(NewsList.news news) {
+        setTopNewsDetailsFragment();
+        topNewsDetailsFragment.updateContent(news);
     }
 }
