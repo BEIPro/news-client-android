@@ -65,7 +65,7 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
             params = new LinearLayout.LayoutParams(windowManager.getDefaultDisplay().getWidth() / 3, LinearLayout.LayoutParams.MATCH_PARENT);
             viewHolder.imageView.setLayoutParams(params);
 
-            viewHolder.imageView.setImageBitmap(newsItem.getBitmap());
+            viewHolder.imageView.setImageBitmap(newsItem.getThumbnailBitmap());
             viewHolder.newsSrcTextView.setText(newsItem.getDescription());
             viewHolder.newsTime.setText(newsItem.getCtime());
             viewHolder.titleTextView.setText(newsItem.getTitle());

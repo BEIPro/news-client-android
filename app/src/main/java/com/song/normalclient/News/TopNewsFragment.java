@@ -34,7 +34,7 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
     private NewsRecycleViewAdapter newsRecycleViewAdapter;
     private View rootView;
 
-    private static int currentPage = 1;
+    private  int currentPage = 1;
 
     public static final int DATA_SWAP = 10;
     public static final int DATA_ADD = 11;
@@ -50,6 +50,7 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "firstIn = " + firstIn + "currentPage = " + currentPage);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
         recyclerView.setOnScrollListener(new UpPullLoadListner(layoutManager) {
             @Override
             void onLoadMore() {
-                MNewsAPI.GetNewsList(MNewsContract.HTTPURL, MNewsContract.HTTPARG, currentPage)
+                MNewsAPI.getNewsList(MNewsContract.HTTPURL, MNewsContract.HTTPARG, currentPage)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Action1<List<NewsList.news>>() {
                             @Override
@@ -112,7 +113,7 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        MNewsAPI.GetNewsList(MNewsContract.HTTPURL, MNewsContract.HTTPARG, 1).
+        MNewsAPI.getNewsList(MNewsContract.HTTPURL, MNewsContract.HTTPARG, 1).
                 observeOn(AndroidSchedulers.mainThread()).
                 subscribe(new Action1<List<NewsList.news>>() {
 
@@ -172,6 +173,7 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
     }
 
     void swapNewsList(List<NewsList.news> srcNewses, int pageNum, int swapOrAdd){
+        Log.d(TAG,"swapNewsList" + "size = ");
         if(newsList == null){
             newsList = new ArrayList<>();
         }
@@ -189,4 +191,10 @@ public class TopNewsFragment extends BaseFragment implements SwipeRefreshLayout.
         void onItemClicked(NewsList.news news);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        newsList.clear();
+        Log.d(TAG, "firstIn = " + firstIn + "currentPage = " + currentPage);
+    }
 }

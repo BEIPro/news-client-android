@@ -1,11 +1,15 @@
 package com.song.normalclient.News;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.song.normalclient.Data.NewsList;
@@ -17,8 +21,11 @@ import com.song.normalclient.R;
 public class TopNewsDetailsFragment extends BaseFragment{
 
     private ImageView imageView;
-    private TextView textView;
-    private NewsList.news news;
+    private TextView titleTextView;
+    private TextView tagTextView;
+    private TextView contentTextView;
+    private NewsList.NewsDetails newsDetails;
+    private Context context;
 
     public TopNewsDetailsFragment(int layoutSrcId) {
         super(layoutSrcId);
@@ -27,19 +34,34 @@ public class TopNewsDetailsFragment extends BaseFragment{
     @Override
     void initViews(View rootView) {
         imageView = (ImageView) rootView.findViewById(R.id.top_details_imgview);
-        textView = (TextView) rootView.findViewById(R.id.top_details_textview);
+        titleTextView = (TextView) rootView.findViewById(R.id.top_details_news_title);
+        contentTextView = (TextView) rootView.findViewById(R.id.top_details_content);
+        tagTextView = (TextView) rootView.findViewById(R.id.pic_tag);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        imageView.setImageBitmap(news.getBitmap());
-        textView.setText(news.getTitle());
+        LinearLayout.LayoutParams params;
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, windowManager.getDefaultDisplay().getHeight() / 4);
+        imageView.setLayoutParams(params);
+
+        imageView.setImageBitmap(newsDetails.getDetailsBitmap());
+        titleTextView.setText(newsDetails.getDetailsTitle());
+        contentTextView.setText(newsDetails.getDetailsText());
+        tagTextView.setText(newsDetails.getPicTag());
         return rootView;
     }
 
-    public void updateContent(NewsList.news news){
-        this.news = news;
+    public void updateContentWithNewsDetails(NewsList.NewsDetails newsDetails){
+        this.newsDetails = newsDetails;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
 }
