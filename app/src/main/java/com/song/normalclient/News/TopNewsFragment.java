@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.song.normalclient.Data.MNewsAPI;
 import com.song.normalclient.Data.MNewsContract;

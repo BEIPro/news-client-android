@@ -1,21 +1,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_layout"
-    android:orientation="vertical"
+    android:id="@+id/main_content"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
+    android:orientation="vertical">
+
     <com.song.normalclient.Views.UnScrollableViewPager
         android:id="@+id/main_unscrollableviewpager"
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.song.normalclient.Views.UnScrollableViewPager>
+        android:layout_height="match_parent"
+        android:layout_weight="1"></com.song.normalclient.Views.UnScrollableViewPager>
+
     <com.song.normalclient.Views.BottomTablayout
         android:id="@+id/main_tablayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:tabIndicatorColor="@color/abc_search_url_text_normal">
-    </com.song.normalclient.Views.BottomTablayout>
+        app:tabIndicatorColor="@color/abc_search_url_text_normal"></com.song.normalclient.Views.BottomTablayout>
 </LinearLayout>

@@ -63,14 +63,8 @@ public class MNewsActivity extends AppCompatActivity implements TopNewsFragment.
 
     @Override
     public void onItemClicked(NewsList.news news) {
-        MNewsAPI.getNewsDetails(news)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<NewsList.NewsDetails>() {
-                    @Override
-                    public void call(NewsList.NewsDetails newsDetails) {
-                        topNewsDetailsFragment.updateContentWithNewsDetails(newsDetails);
-                        setTopNewsDetailsFragment();
-                    }
-                });
+
+        setTopNewsDetailsFragment();
+        topNewsDetailsFragment.setNews(news);
     }
 }

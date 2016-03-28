@@ -149,9 +149,15 @@ public class MNewsAPI {
         return newsList.newslist;
     }
 
-    static Bitmap getNewsImage(String url) {
+    static Bitmap getNewsImage(final String url) {
         RequestFuture<Bitmap> requestFuture = RequestFuture.newFuture();
-        ImageRequest imageRequest = new ImageRequest(url, requestFuture, 0, 0, Bitmap.Config.RGB_565, requestFuture);
+        ImageRequest imageRequest = new ImageRequest(url, requestFuture, 0, 0, Bitmap.Config.RGB_565, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "getNewsImage error url" + url);
+                Log.d(TAG, "getNewsImage error" + error);
+            }
+        });
         requestQueue.add(imageRequest);
         Bitmap bitmap = null;
         try {

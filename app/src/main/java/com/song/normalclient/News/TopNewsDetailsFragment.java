@@ -1,24 +1,30 @@
 package com.song.normalclient.News;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.song.normalclient.Data.MNewsAPI;
 import com.song.normalclient.Data.NewsList;
 import com.song.normalclient.R;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * Created by songsubei on 26/03/16.
  */
-public class TopNewsDetailsFragment extends BaseFragment{
+public class TopNewsDetailsFragment extends MyPrograssFragment{
 
     private ImageView imageView;
     private TextView titleTextView;
@@ -26,6 +32,15 @@ public class TopNewsDetailsFragment extends BaseFragment{
     private TextView contentTextView;
     private NewsList.NewsDetails newsDetails;
     private Context context;
+    private NewsList.news news;
+
+    public NewsList.news getNews() {
+        return news;
+    }
+
+    public void setNews(NewsList.news news) {
+        this.news = news;
+    }
 
     public TopNewsDetailsFragment(int layoutSrcId) {
         super(layoutSrcId);
@@ -42,21 +57,44 @@ public class TopNewsDetailsFragment extends BaseFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        final View rootView = super.onCreateView(inflater, container, savedInstanceState);
         LinearLayout.LayoutParams params;
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, windowManager.getDefaultDisplay().getHeight() / 4);
         imageView.setLayoutParams(params);
 
-        imageView.setImageBitmap(newsDetails.getDetailsBitmap());
-        titleTextView.setText(newsDetails.getDetailsTitle());
-        contentTextView.setText(newsDetails.getDetailsText());
-        tagTextView.setText(newsDetails.getPicTag());
+        ViewTreeObserver viewTreeObserver = rootView.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    rootView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+                MNewsAPI.getNewsDetails(news)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<NewsList.NewsDetails>() {
+                            @Override
+                            public void call(NewsList.NewsDetails newsDetails) {
+                                updateContentWithNewsDetails(newsDetails);
+                            }
+                        });
+            }
+        });
         return rootView;
     }
 
     public void updateContentWithNewsDetails(NewsList.NewsDetails newsDetails){
-        this.newsDetails = newsDetails;
+        imageView.setImageBitmap(newsDetails.getDetailsBitmap());
+        titleTextView.setText(newsDetails.getDetailsTitle());
+        contentTextView.setText(newsDetails.getDetailsText());
+        tagTextView.setText(newsDetails.getPicTag());
+        setContentShown(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setContentShown(false);
     }
 
     @Override
