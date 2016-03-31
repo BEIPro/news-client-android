@@ -49,9 +49,7 @@ public abstract class MyPrograssFragment extends ProgressFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // Setup content view
         setContentView(mContentView);
-        // Setup text for empty content
         setEmptyText("emty");
     }
 

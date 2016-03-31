@@ -31,12 +31,12 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle bundle = getArguments();
         View rootView = null;
-        if (bundle != null){
+        if (bundle != null) {
             int srcId;
-                if ((srcId = bundle.getInt("srcId")) != 0){
-                    rootView = inflater.inflate(srcId, container, false);
-                    initViews(rootView);
-                }
+            if ((srcId = bundle.getInt("srcId")) != 0) {
+                rootView = inflater.inflate(srcId, container, false);
+                initViews(rootView);
+            }
         }
         return rootView;
     }

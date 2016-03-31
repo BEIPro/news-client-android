@@ -51,7 +51,7 @@ public class NewsFragment extends BaseFragment implements AppCompatCallback{
 
     private void initToolBar() {
         toolbar = (Toolbar)rootView.findViewById(R.id.toolbar);
-        toolbar.setTitle("33oz");
+        toolbar.setTitle("NewsClient");
         activity.setSupportActionBar(toolbar);
     }
 

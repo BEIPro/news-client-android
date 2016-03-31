@@ -14,7 +14,7 @@ public class NewsList {
     public String msg;
     public List<news> newslist;
 
-    public static class news{
+    public static class news {
         private String ctime;
         private String title;
         private String description;
@@ -117,7 +117,7 @@ public class NewsList {
         }
     }
 
-    public static class NewsDetails{
+    public static class NewsDetails {
 
         private Bitmap detailsBitmap;
         private String detailsText;

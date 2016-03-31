@@ -5,20 +5,16 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.song.normalclient.Data.MNewsAPI;
 import com.song.normalclient.Data.NewsList;
 import com.song.normalclient.R;
-
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 
 
 /**
  * Created by songsubei on 26/09/15.
  */
-public class MNewsActivity extends AppCompatActivity implements TopNewsFragment.onItemClickListner {
+public class MNewsActivity extends AppCompatActivity implements SportNewsFragment.onItemClickListner {
 
-    private TopNewsDetailsFragment topNewsDetailsFragment;
+    private SportNewsDetailsFragment sportNewsDetailsFragment;
     private MainFragment mainFragment;
 
     @Override
@@ -40,7 +36,7 @@ public class MNewsActivity extends AppCompatActivity implements TopNewsFragment.
     }
 
     void initTopNewsDetailsFragment() {
-        topNewsDetailsFragment = new TopNewsDetailsFragment(R.layout.top_news_details_fragment);
+        sportNewsDetailsFragment = new SportNewsDetailsFragment(R.layout.sport_news_details_fragment);
     }
 
     void initMainFragment() {
@@ -56,7 +52,7 @@ public class MNewsActivity extends AppCompatActivity implements TopNewsFragment.
     void setTopNewsDetailsFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(mainFragment);
-        fragmentTransaction.add(R.id.main_activity_layout, topNewsDetailsFragment, null);
+        fragmentTransaction.add(R.id.main_activity_layout, sportNewsDetailsFragment, null);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
@@ -65,6 +61,6 @@ public class MNewsActivity extends AppCompatActivity implements TopNewsFragment.
     public void onItemClicked(NewsList.news news) {
 
         setTopNewsDetailsFragment();
-        topNewsDetailsFragment.setNews(news);
+        sportNewsDetailsFragment.setNews(news);
     }
 }

@@ -24,7 +24,7 @@ import rx.functions.Action1;
 /**
  * Created by songsubei on 26/03/16.
  */
-public class TopNewsDetailsFragment extends MyPrograssFragment{
+public class SportNewsDetailsFragment extends MyPrograssFragment{
 
     private ImageView imageView;
     private TextView titleTextView;
@@ -42,7 +42,7 @@ public class TopNewsDetailsFragment extends MyPrograssFragment{
         this.news = news;
     }
 
-    public TopNewsDetailsFragment(int layoutSrcId) {
+    public SportNewsDetailsFragment(int layoutSrcId) {
         super(layoutSrcId);
     }
 
@@ -59,7 +59,7 @@ public class TopNewsDetailsFragment extends MyPrograssFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = super.onCreateView(inflater, container, savedInstanceState);
         LinearLayout.LayoutParams params;
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        final WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, windowManager.getDefaultDisplay().getHeight() / 4);
         imageView.setLayoutParams(params);
 
@@ -70,7 +70,7 @@ public class TopNewsDetailsFragment extends MyPrograssFragment{
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     rootView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
-                MNewsAPI.getNewsDetails(news)
+                MNewsAPI.getNewsDetails(news, windowManager.getDefaultDisplay().getWidth(),windowManager.getDefaultDisplay().getHeight()/4)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Action1<NewsList.NewsDetails>() {
                             @Override

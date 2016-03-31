@@ -30,4 +30,7 @@ dependencies {
     compile files('libs/jsoup-1.8.3.jar')
     compile files('libs/progressfragment.jar')
     compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.+'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.okio:okio:1.6.0'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.2.0'
 }

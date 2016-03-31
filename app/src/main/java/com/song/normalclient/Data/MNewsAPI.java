@@ -11,9 +11,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.song.normalclient.Volley.OkHttpStack;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import rx.Observable;
-import rx.Scheduler;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -42,7 +41,7 @@ public class MNewsAPI {
 
     private static RequestQueue requestQueue;
 
-    public static Observable getNewsList(String url, String urlArgs, int pageNum) {
+    public static Observable getNewsList(String url, String urlArgs, int pageNum, final int maxWidth, final int maxHeight) {
         return deferGetNewsJSONObject(url, urlArgs, pageNum).
                 subscribeOn(Schedulers.io()).
                 map(new Func1<JSONObject, List<NewsList.news>>() {
@@ -60,27 +59,19 @@ public class MNewsAPI {
 
             @Override
             public NewsList.news call(NewsList.news news) {
-                news.setThumbnailBitmap(getNewsImage(news.getPicUrl()));
+                news.setThumbnailBitmap(getNewsImage(news.getPicUrl(), maxWidth, maxHeight));
                 return news;
             }
         }).buffer(10);
     }
 
-    private static rx.Observable deferGetNewsJSONObject(String url, final String urlArgs, int pageNum) {
+    private static rx.Observable deferGetNewsJSONObject(String url, final String urlArgs, final int pageNum) {
         final String mUrl;
-        if (urlArgs != null) {
-            mUrl = url + "?" + urlArgs + pageNum;
-        } else {
-            mUrl = url;
-        }
+        mUrl = url + "?" + urlArgs + pageNum;
         return rx.Observable.defer(new Func0<rx.Observable<JSONObject>>() {
             @Override
             public rx.Observable<JSONObject> call() {
-                if (urlArgs != null) {
-                    return rx.Observable.just(getNewsJSONObject(mUrl, true));
-                } else {
-                    return rx.Observable.just(getNewsJSONObject(mUrl, false));
-                }
+                return rx.Observable.just(getNewsJSONObject(mUrl));
             }
         });
     }
@@ -94,40 +85,28 @@ public class MNewsAPI {
         });
     }
 
-    private static rx.Observable deferGetNewsJSONObject(String url) {
-        return deferGetNewsJSONObject(url, null, 0);
-    }
-
     public static RequestQueue creatRequestQueue(Context context) {
-        return requestQueue = Volley.newRequestQueue(context);
+        return requestQueue = Volley.newRequestQueue(context, new OkHttpStack());
     }
 
-    private static JSONObject getNewsJSONObject(String url, boolean needKey) {
+    private static JSONObject getNewsJSONObject(String url) {
 
         JsonObjectRequest jsonObjectRequest;
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
-        if (needKey) {
-            jsonObjectRequest = new JsonObjectRequest(url, requestFuture, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d(TAG, "getNewsJSONObject error" + error);
-                }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap headers = new HashMap();
-                    headers.put("apikey", "3dc0406a6b2ae6fa7e0eee155f201415");
-                    return headers;
-                }
-            };
-        } else {
-            jsonObjectRequest = new JsonObjectRequest(url, requestFuture, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d(TAG, "getNewsJSONObject error" + error);
-                }
-            });
-        }
+
+        jsonObjectRequest = new JsonObjectRequest(url, requestFuture, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "getNewsJSONObject error" + error);
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("apikey", "3dc0406a6b2ae6fa7e0eee155f201415");
+                return headers;
+            }
+        };
         Log.d(TAG, "getNewsJSONObject" + url);
         requestQueue.add(jsonObjectRequest);
         JSONObject jsonObject = null;
@@ -142,16 +121,16 @@ public class MNewsAPI {
         return jsonObject;
     }
 
-    static List<NewsList.news> jsonToList(JSONObject jsonObject) {
+    private static List<NewsList.news> jsonToList(JSONObject jsonObject) {
         Gson gson = new Gson();
         NewsList newsList = gson.fromJson(jsonObject.toString(), NewsList.class);
 
         return newsList.newslist;
     }
 
-    static Bitmap getNewsImage(final String url) {
+    private static Bitmap getNewsImage(final String url, int maxWidth, int maxHeight) {
         RequestFuture<Bitmap> requestFuture = RequestFuture.newFuture();
-        ImageRequest imageRequest = new ImageRequest(url, requestFuture, 0, 0, Bitmap.Config.RGB_565, new Response.ErrorListener() {
+        ImageRequest imageRequest = new ImageRequest(url, requestFuture, maxWidth, maxHeight, Bitmap.Config.RGB_565, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "getNewsImage error url" + url);
@@ -170,31 +149,13 @@ public class MNewsAPI {
         return bitmap;
     }
 
-    static public Observable getNewsDetails(NewsList.news news) {
+    static public Observable getNewsDetails(NewsList.news news, final int maxWidth, final int maxHeight) {
         return deferGetJsoupDoc(news.getUrl())
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<Document, NewsList.NewsDetails>() {
                     @Override
                     public NewsList.NewsDetails call(Document document) {
-                        StringBuffer stringBuffer = new StringBuffer();
-                        Element articalNodes = document.getElementById("artical");
-                        Element articalTitle = articalNodes.getElementById("artical_topic");
-                        Element articalReal = articalNodes.getElementById("main_content");
-                        Elements detailPicUrl = articalNodes.getElementsByClass("detailPic");
-                        Elements imgUrls = detailPicUrl.select("img[src]");
-                        String detailsImgUrl = imgUrls.attr("abs:src");
-                        Elements elements = articalReal.select("p");
-                        Elements tagelements = new Elements();
-                        for (int i = 0; i < elements.size(); i++) {
-                            if (elements.get(i).className().equals("picIntro")) {
-                                tagelements.add(elements.get(i));
-                                continue;
-                            }
-                            stringBuffer.append(elements.get(i).text());
-                            stringBuffer.append("\r\n");
-                        }
-                        return new NewsList.NewsDetails(getNewsImage(detailsImgUrl),
-                                stringBuffer.toString(), articalTitle.text(), tagelements.get(0).text());
+                        return getNewsDetailFromJoupDoc(document, maxWidth, maxHeight);
                     }
                 });
     }
@@ -207,5 +168,28 @@ public class MNewsAPI {
             e.printStackTrace();
         }
         return document;
+    }
+
+    private static NewsList.NewsDetails getNewsDetailFromJoupDoc(Document document, int maxWidth, int maxHeight) {
+        StringBuffer stringBuffer = new StringBuffer();
+        Element articalNodes = document.getElementById("artical");
+        Element articalTitle = articalNodes.getElementById("artical_topic");
+        Element articalReal = articalNodes.getElementById("main_content");
+        Elements detailPicUrl = articalNodes.getElementsByClass("detailPic");
+        Elements imgUrls = detailPicUrl.select("img[src]");
+        String detailsImgUrl = imgUrls.attr("abs:src");
+        Elements elements = articalReal.select("p");
+        Elements tagelements = new Elements();
+        for (int i = 0; i < elements.size(); i++) {
+            if (elements.get(i).className().equals("picIntro")) {
+                tagelements.add(elements.get(i));
+                continue;
+            }
+            stringBuffer.append(elements.get(i).text());
+            stringBuffer.append("\r\n");
+        }
+
+        return new NewsList.NewsDetails(getNewsImage(detailsImgUrl, maxWidth, maxHeight),
+                stringBuffer.toString(), articalTitle.text(), tagelements.get(0).text());
     }
 }
