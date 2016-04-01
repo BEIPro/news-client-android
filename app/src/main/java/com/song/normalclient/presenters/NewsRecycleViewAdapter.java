@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.song.normalclient.Data.NewsList;
@@ -58,11 +59,11 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
             NewsViewHolder viewHolder = (NewsViewHolder) holder;
             NewsList.news newsItem = newsList.get(position);
 
-            LinearLayout.LayoutParams params;
+            RelativeLayout.LayoutParams params;
             WindowManager windowManager = (WindowManager) viewHolder.itemView.getContext().getSystemService(Context.WINDOW_SERVICE);
-            params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, windowManager.getDefaultDisplay().getHeight() / 6);
+            params = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, windowManager.getDefaultDisplay().getHeight() / 6);
             viewHolder.itemView.setLayoutParams(params);
-            params = new LinearLayout.LayoutParams(windowManager.getDefaultDisplay().getWidth() / 3, LinearLayout.LayoutParams.MATCH_PARENT);
+            params = new RelativeLayout.LayoutParams(windowManager.getDefaultDisplay().getWidth() / 3, LinearLayout.LayoutParams.MATCH_PARENT);
             viewHolder.imageView.setLayoutParams(params);
 
             viewHolder.imageView.setImageBitmap(newsItem.getThumbnailBitmap());
