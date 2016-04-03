@@ -46,6 +46,7 @@ public class MNewsActivity extends AppCompatActivity implements SportNewsFragmen
     void setMainFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.main_activity_layout, mainFragment, null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         fragmentTransaction.commit();
     }
 
@@ -53,6 +54,7 @@ public class MNewsActivity extends AppCompatActivity implements SportNewsFragmen
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(mainFragment);
         fragmentTransaction.add(R.id.main_activity_layout, sportNewsDetailsFragment, null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

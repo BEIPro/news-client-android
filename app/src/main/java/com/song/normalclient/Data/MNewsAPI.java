@@ -149,7 +149,7 @@ public class MNewsAPI {
         return bitmap;
     }
 
-    static public Observable getNewsDetails(NewsList.news news, final int maxWidth, final int maxHeight) {
+    public static Observable getNewsDetails(NewsList.news news, final int maxWidth, final int maxHeight) {
         return deferGetJsoupDoc(news.getUrl())
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<Document, NewsList.NewsDetails>() {
