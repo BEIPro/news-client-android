@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.song.normalclient.Data.MNewsAPI;
 import com.song.normalclient.Data.NewsList;
 import com.song.normalclient.R;
+import com.song.normalclient.Views.SwipeBackView;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -33,6 +34,7 @@ public class SportNewsDetailsFragment extends MyPrograssFragment{
     private NewsList.NewsDetails newsDetails;
     private Context context;
     private NewsList.news news;
+    private SwipeBackView swipeBackView;
 
     public NewsList.news getNews() {
         return news;
@@ -58,6 +60,8 @@ public class SportNewsDetailsFragment extends MyPrograssFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        swipeBackView = new SwipeBackView(context);
+        swipeBackView.replaceLayer(rootView);
         LinearLayout.LayoutParams params;
         final WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, windowManager.getDefaultDisplay().getHeight() / 4);
@@ -80,7 +84,7 @@ public class SportNewsDetailsFragment extends MyPrograssFragment{
                         });
             }
         });
-        return rootView;
+        return swipeBackView;
     }
 
     public void updateContentWithNewsDetails(NewsList.NewsDetails newsDetails){
