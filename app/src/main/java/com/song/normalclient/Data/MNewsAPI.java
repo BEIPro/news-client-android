@@ -171,15 +171,25 @@ public class MNewsAPI {
     }
 
     private static NewsList.NewsDetails getNewsDetailFromJoupDoc(Document document, int maxWidth, int maxHeight) {
+        String detailsImgUrl = null;
         StringBuffer stringBuffer = new StringBuffer();
         Element articalNodes = document.getElementById("artical");
         Element articalTitle = articalNodes.getElementById("artical_topic");
         Element articalReal = articalNodes.getElementById("main_content");
-        Elements detailPicUrl = articalNodes.getElementsByClass("detailPic");
-        Elements imgUrls = detailPicUrl.select("img[src]");
-        String detailsImgUrl = imgUrls.attr("abs:src");
         Elements elements = articalReal.select("p");
         Elements tagelements = new Elements();
+        Elements detailPicUrl = articalNodes.getElementsByClass("detailPic");
+        if(detailPicUrl.size() != 0){
+            Elements imgUrls = detailPicUrl.select("img[src]");
+            detailsImgUrl = imgUrls.attr("abs:src");
+            Log.d(TAG, "imgurl != null");
+        }
+        else {
+            Element e = elements.get(0);
+            detailsImgUrl = e.child(0).attr("src");
+            tagelements.add(elements.get(1));
+        }
+
         for (int i = 0; i < elements.size(); i++) {
             if (elements.get(i).className().equals("picIntro")) {
                 tagelements.add(elements.get(i));
