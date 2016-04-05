@@ -188,6 +188,7 @@ public class MNewsAPI {
             Element e = elements.get(0);
             detailsImgUrl = e.child(0).attr("src");
             tagelements.add(elements.get(1));
+            elements.remove(1);
         }
 
         for (int i = 0; i < elements.size(); i++) {
