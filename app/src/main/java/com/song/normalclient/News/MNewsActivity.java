@@ -52,7 +52,6 @@ public class MNewsActivity extends AppCompatActivity implements SportNewsFragmen
 
     void setTopNewsDetailsFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.hide(mainFragment);
         fragmentTransaction.add(R.id.main_activity_layout, sportNewsDetailsFragment, null);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.addToBackStack(null);
