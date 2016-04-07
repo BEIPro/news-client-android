@@ -27,10 +27,7 @@ public class SwipeBackView extends FrameLayout {
 
     private Drawable leftShadow;
     private FragmentActivity fragmentActivity;
-    private boolean swipeEnabled = true;
     private boolean swipeAnyWhere = true;
-    private boolean swipeFinished = false;
-    private Fragment fragment;
 
     private boolean canSwipe = false;
     private boolean ignoreSwipe = false;
@@ -44,7 +41,6 @@ public class SwipeBackView extends FrameLayout {
     private float downY;
     private float lastX;
     private float currentX;
-    private float currentY;
 
     private int touchSlopDP = 20;
     private int touchSlop = 60;
@@ -91,14 +87,13 @@ public class SwipeBackView extends FrameLayout {
     @Override
     public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
 
-        if (swipeEnabled && !canSwipe && !ignoreSwipe) {
+        if ( !canSwipe && !ignoreSwipe) {
             if (swipeAnyWhere) {
                 switch (ev.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         downX = ev.getX();
                         downY = ev.getY();
                         currentX = downX;
-                        currentY = downY;
                         lastX = downX;
                         break;
                     case MotionEvent.ACTION_MOVE:
@@ -109,7 +104,6 @@ public class SwipeBackView extends FrameLayout {
                                 downX = ev.getX();
                                 downY = ev.getY();
                                 currentX = downX;
-                                currentY = downY;
                                 lastX = downX;
                                 canSwipe = true;
                                 tracker = VelocityTracker.obtain();
@@ -149,12 +143,10 @@ public class SwipeBackView extends FrameLayout {
                     downX = event.getX();
                     downY = event.getY();
                     currentX = downX;
-                    currentY = downY;
                     lastX = downX;
                     break;
                 case MotionEvent.ACTION_MOVE:
                     currentX = event.getX();
-                    currentY = event.getY();
                     float dx = currentX - lastX;
                     if (dx != 0f && !hasIgnoreFirstMove) {
                         hasIgnoreFirstMove = true;
@@ -246,7 +238,6 @@ public class SwipeBackView extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                swipeFinished = true;
                 fragmentActivity.getSupportFragmentManager().popBackStack();
             }
 
