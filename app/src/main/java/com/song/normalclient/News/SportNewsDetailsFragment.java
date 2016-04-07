@@ -91,7 +91,10 @@ public class SportNewsDetailsFragment extends MyPrograssFragment{
         imageView.setImageBitmap(newsDetails.getDetailsBitmap());
         titleTextView.setText(newsDetails.getDetailsTitle());
         contentTextView.setText(newsDetails.getDetailsText());
-        tagTextView.setText(newsDetails.getPicTag());
+        if(!newsDetails.getPicTag().equals("")){
+            tagTextView.setText(newsDetails.getPicTag());
+        }
+
         setContentShown(true);
     }
 

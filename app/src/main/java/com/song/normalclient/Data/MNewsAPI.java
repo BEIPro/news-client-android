@@ -185,8 +185,13 @@ public class MNewsAPI {
             Log.d(TAG, "imgurl != null");
         }
         else {
-            Element e = elements.get(0);
-            detailsImgUrl = e.child(0).attr("src");
+            Elements e = elements.select("p");
+            for(int i =0; i < e.size(); i++){
+                    if(!e.get(i).childNode(0).attr("src").equals("")){
+                        detailsImgUrl = e.get(i).child(0).attr("src");
+                        break;
+                    }
+            }
             tagelements.add(elements.get(1));
             elements.remove(1);
         }
@@ -196,11 +201,13 @@ public class MNewsAPI {
                 tagelements.add(elements.get(i));
                 continue;
             }
-            stringBuffer.append(elements.get(i).text());
-            stringBuffer.append("\r\n");
+            if(!elements.get(i).text().equals("")){
+                stringBuffer.append(elements.get(i).text());
+                stringBuffer.append("\r\n");
+            }
         }
 
         return new NewsList.NewsDetails(getNewsImage(detailsImgUrl, maxWidth, maxHeight),
-                stringBuffer.toString(), articalTitle.text(), tagelements.get(0).text());
+                stringBuffer.toString(), articalTitle.text(), tagelements.size() > 0 ? tagelements.get(0).text(): "");
     }
 }

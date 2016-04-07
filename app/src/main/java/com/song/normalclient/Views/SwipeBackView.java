@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.song.normalclient.R;
  */
 public class SwipeBackView extends FrameLayout {
 
+    public static final String Tag = "SwipeBackView";
     private Drawable leftShadow;
     private FragmentActivity fragmentActivity;
     private boolean swipeAnyWhere = true;
