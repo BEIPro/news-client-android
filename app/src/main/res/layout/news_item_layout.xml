@@ -7,7 +7,6 @@
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/mail_alt"
         android:id="@+id/breviary_image"/>
 
     <TextView

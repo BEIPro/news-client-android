@@ -59,7 +59,7 @@ public class SportNewsFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     void initViews(View rootView) {
         this.rootView = rootView;
-        MNewsAPI.creatRequestQueue(context);
+        MNewsAPI.creatRequestQueue(context.getApplicationContext());
         onRefresh();
         initSwipRefreshLayout(rootView);
     }

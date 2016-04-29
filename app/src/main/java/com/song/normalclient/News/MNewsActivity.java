@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.song.normalclient.Data.NewsList;
 import com.song.normalclient.R;
@@ -24,6 +25,7 @@ public class MNewsActivity extends AppCompatActivity implements SportNewsFragmen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("MNewsActivity","onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity_layout);
         initViews();

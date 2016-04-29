@@ -40,6 +40,7 @@ public class MNewsAPI {
     private static final String TAG = "MNewsAPI";
 
     private static RequestQueue requestQueue;
+    private static boolean D = false;
 
     public static Observable getNewsList(String url, String urlArgs, int pageNum, final int maxWidth, final int maxHeight) {
         return deferGetNewsJSONObject(url, urlArgs, pageNum).
@@ -97,7 +98,7 @@ public class MNewsAPI {
         jsonObjectRequest = new JsonObjectRequest(url, requestFuture, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "getNewsJSONObject error" + error);
+                LogD(TAG, "getNewsJSONObject error" + error);
             }
         }) {
             @Override
@@ -107,7 +108,7 @@ public class MNewsAPI {
                 return headers;
             }
         };
-        Log.d(TAG, "getNewsJSONObject" + url);
+        LogD(TAG, "getNewsJSONObject" + url);
         requestQueue.add(jsonObjectRequest);
         JSONObject jsonObject = null;
         try {
@@ -117,7 +118,7 @@ public class MNewsAPI {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        Log.d(TAG, "getNewsJSONObject" + jsonObject.toString());
+        LogD(TAG, "getNewsJSONObject" + jsonObject.toString());
         return jsonObject;
     }
 
@@ -133,20 +134,24 @@ public class MNewsAPI {
         ImageRequest imageRequest = new ImageRequest(url, requestFuture, maxWidth, maxHeight, Bitmap.Config.RGB_565, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "getNewsImage error url" + url);
-                Log.d(TAG, "getNewsImage error" + error);
+                LogD(TAG, "getNewsImage error url" + url);
+                LogD(TAG, "getNewsImage error" + error);
             }
         });
-        requestQueue.add(imageRequest);
         Bitmap bitmap = null;
-        try {
-            bitmap = requestFuture.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if(url.equals("")){
+            return Bitmap.createBitmap(maxWidth, maxHeight, Bitmap.Config.RGB_565);
+        }else {
+            requestQueue.add(imageRequest);
+            try {
+                bitmap = requestFuture.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            return bitmap;
         }
-        return bitmap;
     }
 
     public static Observable getNewsDetails(NewsList.news news, final int maxWidth, final int maxHeight) {
@@ -182,7 +187,7 @@ public class MNewsAPI {
         if(detailPicUrl.size() != 0){
             Elements imgUrls = detailPicUrl.select("img[src]");
             detailsImgUrl = imgUrls.attr("abs:src");
-            Log.d(TAG, "imgurl != null");
+            LogD(TAG, "imgurl != null");
         }
         else {
             Elements e = elements.select("p");
@@ -209,5 +214,11 @@ public class MNewsAPI {
 
         return new NewsList.NewsDetails(getNewsImage(detailsImgUrl, maxWidth, maxHeight),
                 stringBuffer.toString(), articalTitle.text(), tagelements.size() > 0 ? tagelements.get(0).text(): "");
+    }
+
+    public static void LogD(String TAG, String content){
+        if (D){
+            Log.d(TAG, content);
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.song.normalclient.presenters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,12 +44,12 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType == TYPE_ITEM) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item_layout, null);
-
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item_layout, parent, false);
+            Log.d("NewsRecycleViewAdapter","onCreateViewHolder");
             return new NewsViewHolder(view);
         }
         else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_recycleview_foot_view, null);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_recycleview_foot_view, parent, false);
             return new FootViewHolder(view);
         }
     }
@@ -89,6 +90,7 @@ public class NewsRecycleViewAdapter extends RecyclerView.Adapter{
 
         public NewsViewHolder(View itemView) {
             super(itemView);
+            Log.d("NewsRecycleViewAdapter", " new NewsViewHolder");
             itemView.setOnClickListener(this);
             this.itemView = itemView;
             imageView = (ImageView) itemView.findViewById(R.id.breviary_image);
